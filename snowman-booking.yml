@@ -1,0 +1,78 @@
+openapi: '3.0.2'
+info:
+  title: スキー予約サービス
+  version: '1.0'
+  description: このサービスはスキーのサポートをするため、スキー場、スキー場の天気、スキー場のホテル、ホテルの予約などの機能を提供する。
+servers:
+  - url: https://api.server.test/v1
+paths:
+  /resorts:
+    get:
+      responses:
+        '200':
+          description: スキー場の一覧を取得する。
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#components/schemas/resort"
+  /resorts/{resort_id}/hotels:
+    get:
+      responses:
+        '200':
+          description: スキー場（resort_id）のホテル一覧を取得する。
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  '$ref': '#components/schemas/hotel'
+
+components:
+  schemas:
+    resort:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: スキー場の内部ID、このIDを使って、このスキー場に関連する操作を行える。
+        name:
+          type: string
+          description: スキー場の名称
+        address:
+          type: string
+          description: スキー場の住所
+        weather:
+          type: array
+          description: スキー場の天気状況、0番目は本日の天気、1番目は昨日の天気、2番目は一昨日の天気。。。。
+          items:
+            type: object
+            properties:
+              weather:
+                type: string
+                description: 天気状況（雨、晴れ、雪、曇り）
+                enum:
+                  - rain
+                  - sunny
+                  - snow
+                  - cloud
+              windSpeed:
+                type: integer
+                description: 風のスピード
+              snowDepth:
+                type: integer
+                description: 雪の厚さ、CM単位
+    hotel:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          description: ホテル名称
+        address:
+          type: string
+        telNo:
+          type: string
+          
