@@ -56,6 +56,7 @@ paths:
             type: string
       requestBody:
         required: true
+        description: ホテル予約情報
         content:
           application/json:
             schema:
@@ -67,9 +68,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/booking'
+        '404':
+          description: 予約するホテルは空きがない。
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/message'
 
 components:
   schemas:
+    message:
+      type: object
+      properties:
+        code:
+          type: string
+          description: メッセージコード
+        message:
+          type: string
+          description: メッセージ内容
     resort:
       type: object
       properties:
@@ -128,9 +144,10 @@ components:
           type: string
           description: お客様問い合わせ用注文番号
         bookingGuest:
-          description: 代表者氏名
+          description: 代表者情報
           $ref: '#/components/schemas/guest'
         additionalGuests:
+          description: 同行者情報
           type: array
           items:
             allOf:
@@ -139,19 +156,21 @@ components:
                 properties:
                   relationShip:
                     type: string
-              
 
     guest:
       type: object
       properties:
         name:
+          description: 名前
           type: string
         gender:
+          description: 性別
           type: string
           enum:
             - Male
             - Female
         age:
+          description: 年齢
           type: integer
         
         
